@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Writing Hub — HSC & SSC Exam Preparation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        paper: {
+                            50: '#fdfcf9',
+                            100: '#f8f5ee',
+                            200: '#efe9dc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for clean reading experience */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.4);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.7);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Blur spoiler effect for Study Mode */
+        .study-blur {
+            filter: blur(6px);
+            user-select: none;
+            cursor: pointer;
+            transition: filter 0.25s ease;
+        }
+        .study-blur:hover, .study-blur.revealed {
+            filter: none;
+            user-select: text;
+        }
+
+        /* ----------------------------------------------------------------- */
+        /* 1. VISUAL EFFECTS: AMBIENT MESH, CARD SHEEN & STAGGERED ENTRANCE  */
+        /* ----------------------------------------------------------------- */
+        .ambient-mesh {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 10% 8%, rgba(16, 185, 129, 0.09), transparent 42%),
+                radial-gradient(circle at 90% 14%, rgba(20, 184, 166, 0.08), transparent 44%),
+                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.06), transparent 48%);
+        }
+        .dark .ambient-mesh {
+            background:
+                radial-gradient(circle at 12% 10%, rgba(16, 185, 129, 0.11), transparent 44%),
+                radial-gradient(circle at 88% 16%, rgba(59, 130, 246, 0.08), transparent 46%),
+                radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.05), transparent 50%);
+        }
+
+        @keyframes floatGlow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(18px, -14px) scale(1.05); }
+        }
+        .glow-orb-a {
+            animation: floatGlow 14s ease-in-out infinite;
+        }
+        .glow-orb-b {
+            animation: floatGlow 18s ease-in-out infinite reverse;
+        }
+
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(16px) scale(0.985);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .card-animate-in {
+            animation: cardEntrance 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .writing-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .writing-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -110%;
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(
+                105deg,
+                transparent 20%,
+                rgba(255, 255, 255, 0.24) 50%,
+                transparent 80%
+            );
+            transition: left 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+        .dark .writing-card::before {
+            background: linear-gradient(
+                105deg,
+                transparent 20%,
+                rgba(255, 255, 255, 0.06) 50%,
+                transparent 80%
+            );
+        }
+        .writing-card:hover::before {
+            left: 135%;
+        }
+
+        /* Modal smooth entrance & exit transitions */
+        .modal-backdrop {
+            opacity: 0;
+            backdrop-filter: blur(0px);
+            transition: opacity 0.24s ease, backdrop-filter 0.24s ease;
+        }
+        .modal-backdrop.is-open {
+            opacity: 1;
+            backdrop-filter: blur(4px);
+        }
+        .modal-panel {
+            opacity: 0;
+            transform: translateY(18px) scale(0.975);
+            transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .modal-backdrop.is-open .modal-panel {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ----------------------------------------------------------------- */
+        /* 2. PAGE SHIFTING EFFECTS (FEED SHIFT & READER DIRECTIONAL SHIFT)   */
+        /* ----------------------------------------------------------------- */
+        @keyframes pageShiftInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(34px) rotateY(-3deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) rotateY(0deg);
+            }
+        }
+        @keyframes pageShiftInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-34px) rotateY(3deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) rotateY(0deg);
+            }
+        }
+        @keyframes feedPageShift {
+            0% {
+                opacity: 0.18;
+                transform: translateY(12px) scale(0.992);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .page-shift-next {
+            animation: pageShiftInRight 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .page-shift-prev {
+            animation: pageShiftInLeft 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .feed-page-shift {
+            animation: feedPageShift 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        /* Subtle sweep bar when shifting pages */
+        @keyframes shiftSweep {
+            0% { transform: translateX(-100%); opacity: 0.9; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+        .shift-sweep-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            z-index: 80;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, #10b981, #14b8a6, #f59e0b, transparent);
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        .shift-sweep-bar.active {
+            animation: shiftSweep 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .glow-orb-a, .glow-orb-b, .card-animate-in, .page-shift-next, .page-shift-prev, .feed-page-shift, .shift-sweep-bar {
+                animation: none !important;
+            }
+            .modal-backdrop, .modal-panel, .writing-card::before {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-paper-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-200 min-h-screen flex flex-col relative">
+
+    <!-- Page Shift Top Sweep Indicator -->
+    <div id="pageShiftSweep" class="shift-sweep-bar"></div>
+
+    <!-- Subtle Ambient Gradient Glow / Mesh -->
+    <div class="ambient-mesh" aria-hidden="true">
+        <div class="glow-orb-a absolute -top-24 -left-24 w-96 h-96 rounded-full bg-emerald-400/10 dark:bg-emerald-500/10 blur-3xl"></div>
+        <div class="glow-orb-b absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-teal-400/10 dark:bg-sky-500/10 blur-3xl"></div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-30 bg-white/88 dark:bg-slate-900/88 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white flex items-center justify-center shadow-sm shadow-emerald-600/25 shrink-0 ring-1 ring-white/20">
+                    <i class="fa-solid fa-feather-pointed text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white leading-tight flex items-center gap-2">
+                        <span>NCTB Writing Hub</span>
+                        <span class="hidden sm:inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60">
+                            <i class="fa-solid fa-sparkles text-[9px]"></i> Edition
+                        </span>
+                    </h1>
+                    <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">
+                        SSC & HSC English 1st & 2nd Paper
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Backup Menu Button -->
+                <div class="relative">
+                    <button id="backupMenuBtn" title="Backup & Restore" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-database text-sm"></i>
+                    </button>
+                    <div id="backupDropdown" class="hidden absolute right-0 mt-2 w-52 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50">
+                        <button id="exportJsonBtn" class="w-full px-4 py-2.5 text-left text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center gap-2.5">
+                            <i class="fa-solid fa-download text-emerald-600"></i> Export JSON Backup
+                        </button>
+                        <label class="w-full px-4 py-2.5 text-left text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-upload text-blue-500"></i> Import JSON Backup
+                            <input type="file" id="importJsonInput" accept=".json" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dark Mode Toggle -->
+                <button id="themeToggleBtn" aria-label="Toggle Dark Mode" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+
+                <!-- Prominent Add Writing CTA -->
+                <button id="openAddModalBtn" class="bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-sm shadow-emerald-600/20 flex items-center gap-2 transition">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add Writing</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
+        
+        <!-- Search & Filters Bar -->
+        <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="Search topics, titles, or keywords (e.g., Tree Plantation, Load Shedding)..." 
+                        class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 transition">
+                    <button id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Level & Starred Filters -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-1" role="group">
+                        <button data-level="ALL" class="level-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm transition">All Levels</button>
+                        <button data-level="SSC" class="level-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">SSC</button>
+                        <button data-level="HSC" class="level-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">HSC</button>
+                    </div>
+
+                    <button id="starredFilterBtn" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-amber-950/30 flex items-center gap-1.5 transition">
+                        <i class="fa-regular fa-star text-amber-500"></i>
+                        <span>Exam Suggestions</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Horizontal Category Tabs -->
+            <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1 pb-0.5">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- Exam Format Quick Tip Banner (Contextual to selected category) -->
+        <div id="categoryTipBanner" class="mb-6 bg-emerald-50/85 dark:bg-emerald-950/35 border border-emerald-200/80 dark:border-emerald-800/50 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs transition-all">
+            <div id="tipBannerIconBox" class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                <i id="tipBannerIcon" class="fa-solid fa-lightbulb text-sm"></i>
+            </div>
+            <div class="flex-1 text-sm">
+                <div class="flex items-center justify-between gap-2">
+                    <h3 id="tipBannerTitle" class="font-semibold text-emerald-900 dark:text-emerald-200">Exam Preparation Tip</h3>
+                    <span id="totalCountBadge" class="text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-900/50 px-2.5 py-0.5 rounded-full">Loading...</span>
+                </div>
+                <p id="tipBannerText" class="text-emerald-800/90 dark:text-emerald-300/90 mt-1 text-xs sm:text-sm leading-relaxed">
+                    Select any topic below to read in distraction-free mode, check word counts, or practice with Study Blur mode.
+                </p>
+            </div>
+        </div>
+
+        <!-- Page Shift Wrapper for Feed -->
+        <div id="feedShiftContainer">
+            <!-- Loading Skeleton / State -->
+            <div id="loadingState" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/70 dark:border-slate-800 animate-pulse h-48"></div>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/70 dark:border-slate-800 animate-pulse h-48"></div>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/70 dark:border-slate-800 animate-pulse h-48"></div>
+            </div>
+
+            <!-- Writings Grid -->
+            <div id="writingsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Cards injected via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16 px-4 bg-white/95 dark:bg-slate-900/95 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-book-open text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">No writings found</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1 mb-5">
+                    No writings match your current search or filter. You can reset filters or paste a new writing for this topic.
+                </p>
+                <div class="flex justify-center gap-3">
+                    <button id="resetFiltersBtn" class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                        Reset Filters
+                    </button>
+                    <button onclick="document.getElementById('openAddModalBtn').click()" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition">
+                        + Add New Writing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- READING VIEW MODAL                                                    -->
+    <!-- ===================================================================== -->
+    <div id="readerModal" class="modal-backdrop hidden fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-2 sm:p-4 md:p-6">
+        <div class="modal-panel bg-paper-50 dark:bg-slate-900 w-full max-w-4xl max-h-[94vh] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
+            
+            <!-- Reader Top Toolbar -->
+            <div class="px-4 sm:px-6 py-3.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span id="readerCategoryBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300">
+                        <i id="readerCategoryIcon" class="fa-solid fa-align-left"></i>
+                        <span id="readerCategoryLabel">Paragraph</span>
+                    </span>
+                    <span id="readerLevelBadge" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        SSC & HSC
+                    </span>
+                </div>
+
+                <!-- Reader Controls -->
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <!-- Font Size Selector -->
+                    <div class="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200/60 dark:border-slate-700" title="Adjust Reading Font Size">
+                        <button data-fontsize="sm" class="font-size-btn px-2 py-1 rounded-md text-xs font-semibold text-slate-600 dark:text-slate-300">A-</button>
+                        <button data-fontsize="md" class="font-size-btn px-2 py-1 rounded-md text-xs font-semibold bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm">A</button>
+                        <button data-fontsize="lg" class="font-size-btn px-2 py-1 rounded-md text-xs font-semibold text-slate-600 dark:text-slate-300">A+</button>
+                    </div>
+
+                    <!-- Study Blur Toggle -->
+                    <button id="toggleStudyBlurBtn" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition" title="Blur paragraphs to test your memory">
+                        <i class="fa-solid fa-eye-slash text-indigo-500"></i>
+                        <span class="hidden sm:inline">Memory Mode</span>
+                    </button>
+
+                    <!-- Bookmark Star -->
+                    <button id="readerStarBtn" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition" title="Mark Important for Exam">
+                        <i class="fa-regular fa-star text-amber-500"></i>
+                    </button>
+
+                    <!-- Copy Text -->
+                    <button id="readerCopyBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-medium flex items-center gap-1.5 transition">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Copy</span>
+                    </button>
+
+                    <!-- Edit & Delete -->
+                    <button id="readerEditBtn" class="p-2 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition" title="Edit Writing">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button id="readerDeleteBtn" class="p-2 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition" title="Delete Writing">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+
+                    <!-- Close -->
+                    <button id="closeReaderBtn" class="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition ml-1">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reading Progress Track along Top of Content Area -->
+            <div class="w-full h-1 bg-slate-200/80 dark:bg-slate-800 overflow-hidden shrink-0">
+                <div id="readingProgressBar" class="h-full w-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-400 transition-[width] duration-100 ease-out"></div>
+            </div>
+
+            <!-- Reader Scrollable Content Area -->
+            <div id="readerScrollContainer" class="flex-1 overflow-y-auto px-5 sm:px-10 py-6 sm:py-8">
+                <div id="readerPageShiftStage" class="max-w-3xl mx-auto">
+                    <!-- Title & Stats Header -->
+                    <div class="border-b border-slate-200/80 dark:border-slate-800 pb-5 mb-6 flex items-start gap-3.5 sm:gap-4">
+                        <div id="readerTopicIconBadge" class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                            <i id="readerTopicIcon" class="fa-solid fa-book-open text-lg"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h2 id="readerTitle" class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white leading-snug">
+                                Title Goes Here
+                            </h2>
+                            <div class="flex flex-wrap items-center gap-4 mt-3 text-xs text-slate-500 dark:text-slate-400">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-align-left text-emerald-600"></i>
+                                    <strong id="readerWordCount" class="text-slate-700 dark:text-slate-200">0</strong> words
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-regular fa-clock text-blue-500"></i>
+                                    ~<strong id="readerReadTime" class="text-slate-700 dark:text-slate-200">1</strong> min read / ~<strong id="readerWriteTime" class="text-slate-700 dark:text-slate-200">8</strong> min exam write
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-book-bookmark text-amber-500"></i>
+                                    Page <strong id="readerPageIndicator" class="text-slate-700 dark:text-slate-200">1 of 1</strong>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formatted Body Content -->
+                    <article id="readerContent" class="font-serif text-slate-800 dark:text-slate-200 leading-relaxed space-y-4 text-base sm:text-lg">
+                        <!-- Smart formatted HTML injected here -->
+                    </article>
+
+                    <!-- Exam Structure & Marking Guide Box -->
+                    <div class="mt-10 pt-6 border-t border-slate-200/80 dark:border-slate-800">
+                        <div class="bg-amber-50/70 dark:bg-slate-800/70 border border-amber-200/80 dark:border-slate-700 rounded-xl p-4">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 flex items-center gap-2 mb-1.5">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                NCTB Exam Structure & Scoring Tip
+                            </h4>
+                            <p id="readerStructureTip" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                                Format tip appears here.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reader Page-Shifting Footer (Previous / Next Writing Page) -->
+            <div class="px-4 sm:px-6 py-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                <button id="prevWritingPageBtn" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Previous Page</span>
+                </button>
+
+                <div class="text-xs font-medium text-slate-500 dark:text-slate-400 truncate max-w-[160px] sm:max-w-xs text-center" id="readerNavHint">
+                    Shift pages with arrows or buttons
+                </div>
+
+                <button id="nextWritingPageBtn" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold shadow-xs disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2 transition">
+                    <span>Next Page</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- ADD / EDIT WRITING MODAL                                              -->
+    <!-- ===================================================================== -->
+    <div id="addEditModal" class="modal-backdrop hidden fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-3 sm:p-6">
+        <div class="modal-panel bg-white dark:bg-slate-900 w-full max-w-2xl max-h-[92vh] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <h2 id="modalFormTitle" class="text-lg font-bold text-slate-900 dark:text-white">Add New Writing</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Paste your text below — speakers, headers & paragraphs auto-format cleanly.</p>
+                </div>
+                <button id="closeAddModalBtn" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Form Body -->
+            <form id="writingForm" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <input type="hidden" id="editDocId" value="">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Category Select -->
+                    <div>
+                        <label for="inputCategory" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+                            Topic Category *
+                        </label>
+                        <select id="inputCategory" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="Paragraph Writing">Paragraph Writing</option>
+                            <option value="Completing Story">Completing Story</option>
+                            <option value="Email Writing">Email Writing (Formal & Informal)</option>
+                            <option value="Dialogue Writing">Dialogue Writing</option>
+                            <option value="Report Writing">Report Writing</option>
+                            <option value="Formal Letter / Application">Formal Letter / Application</option>
+                            <option value="Composition / Essay">Composition / Essay</option>
+                            <option value="Graph & Chart Description">Graph & Chart Description</option>
+                        </select>
+                    </div>
+
+                    <!-- Level Select -->
+                    <div>
+                        <label for="inputLevel" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+                            Exam Level *
+                        </label>
+                        <select id="inputLevel" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="Both SSC & HSC">Both SSC & HSC</option>
+                            <option value="HSC">HSC Only</option>
+                            <option value="SSC">SSC Only</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Title Input -->
+                <div>
+                    <label for="inputTitle" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+                        Topic Title *
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="inputTitle" required placeholder="e.g., Tree Plantation, A Dialogue on Load Shedding, Report on Road Accident..."
+                            class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <span id="formTopicIconPreview" title="Auto-matched topic icon" class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-sparkles"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Content Textarea -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="inputContent" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+                            Paste Writing Text *
+                        </label>
+                        <span id="liveWordCounter" class="text-xs font-medium text-emerald-600 dark:text-emerald-400">0 words</span>
+                    </div>
+                    <textarea id="inputContent" required rows="11" placeholder="Paste your entire paragraph, dialogue, email, report, or story here...&#10;&#10;Tip: For dialogues, lines like 'Rahim: How are you?' will automatically bold the speaker's name. For emails, 'To:', 'Subject:' lines will auto-highlight."
+                        class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-serif text-sm sm:text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+
+                <!-- Starred Checkbox -->
+                <label class="flex items-center gap-2.5 cursor-pointer select-none pt-1">
+                    <input type="checkbox" id="inputStarred" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
+                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Mark as Important / Exam Suggestion</span>
+                </label>
+
+                <!-- Submit Buttons -->
+                <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
+                    <button type="button" id="cancelAddModalBtn" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" id="saveWritingBtn" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-sm shadow-emerald-600/20 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Save Writing</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- DELETE CONFIRMATION MODAL                                             -->
+    <!-- ===================================================================== -->
+    <div id="deleteConfirmModal" class="modal-backdrop hidden fixed inset-0 z-[60] bg-slate-900/60 flex items-center justify-center p-4">
+        <div class="modal-panel bg-white dark:bg-slate-900 max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div class="w-11 h-11 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-600 flex items-center justify-center mb-4">
+                <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Delete this writing?</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 mb-5">
+                This action cannot be undone. Are you sure you want to remove "<span id="deleteTargetTitle" class="font-semibold text-slate-700 dark:text-slate-200"></span>"?
+            </p>
+            <div class="flex justify-end gap-2.5">
+                <button id="cancelDeleteBtn" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition">Cancel</button>
+                <button id="confirmDeleteBtn" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold transition">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFICATION                                                    -->
+    <!-- ===================================================================== -->
+    <div id="toast" class="fixed bottom-5 right-5 z-[70] transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-xl flex items-center gap-2.5 text-sm font-medium">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600"></i>
+        <span id="toastMessage">Action completed</span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- APPLICATION LOGIC (LOCAL STORAGE)                                       -->
+    <!-- ===================================================================== -->
+    <script type="module">
+
+        // -------------------------------------------------------------------
+        // 1. CATEGORIES & NCTB EXAM TIPS CONFIGURATION
+        // -------------------------------------------------------------------
+        const CATEGORIES = [
+            { id: 'ALL', label: 'All Topics', icon: 'fa-layer-group', tip: 'Browse all HSC & SSC English writing items. Click any card to read, shift pages, copy, or test yourself with Memory Mode.' },
+            { id: 'Paragraph Writing', label: 'Paragraph', icon: 'fa-align-left', tip: 'NCTB Rule: Always write a paragraph in a SINGLE paragraph (no line breaks). Target 150–200 words for SSC and 200–250 words for HSC.' },
+            { id: 'Completing Story', label: 'Completing Story', icon: 'fa-book-open', tip: 'NCTB Rule: Always give a suitable Title at the top. Copy the given prompt lines first, complete the narrative logically, and add a Moral at the end (especially for traditional fables).' },
+            { id: 'Email Writing', label: 'Email', icon: 'fa-envelope', tip: 'NCTB Rule: Include To, From (optional), Date, and a concise Subject line. Keep informal emails warm and formal emails precise and polite.' },
+            { id: 'Dialogue Writing', label: 'Dialogue', icon: 'fa-comments', tip: 'NCTB Rule: Use natural spoken English, greetings, and contractions (I\'m, don\'t). Ensure balanced exchanges (at least 8–10 pairs of turns) between the two speakers.' },
+            { id: 'Report Writing', label: 'Report', icon: 'fa-newspaper', tip: 'HSC Rule: Must include a catchy Headline, followed by Staff Correspondent / Reporter Name, Place, and Date (e.g., Staff Correspondent, Dhaka, 12 November:). Write objectively in past tense.' },
+            { id: 'Formal Letter / Application', label: 'Application / Letter', icon: 'fa-file-signature', tip: 'NCTB Rule: Follow the modern block style (all aligned to the left): Date, Recipient Designation & Address, Subject line, Salutation, Body, and Subscription (Yours obediently/faithfully).' },
+            { id: 'Composition / Essay', label: 'Composition', icon: 'fa-pen-nib', tip: 'NCTB Rule: Organize into clear paragraphs with an engaging Introduction, 3–4 Body paragraphs with topic sentences, and a strong Conclusion (250–350 words).' },
+            { id: 'Graph & Chart Description', label: 'Graph & Chart', icon: 'fa-chart-column', tip: 'NCTB Rule: Do not give personal opinions. Mention the chart type & topic first, highlight the highest and lowest figures, compare trends using data, and summarize the overall pattern.' }
+        ];
+
+        // -------------------------------------------------------------------
+        // 1B. TOPIC-SPECIFIC ICON RESOLVER (EVERY TOPIC ALWAYS HAS AN ICON)
+        // -------------------------------------------------------------------
+        const TOPIC_ICON_RULES = [
+            { keywords: ['tree', 'plantation', 'forest', 'deforestation', 'leaf', 'green', 'environment', 'nature', 'ecology'], icon: 'fa-seedling' },
+            { keywords: ['traffic', 'jam', 'highway', 'road', 'bus', 'car', 'vehicle', 'transport'], icon: 'fa-car-side' },
+            { keywords: ['accident', 'crash', 'collision', 'fire', 'disaster', 'flood', 'cyclone', 'earthquake'], icon: 'fa-car-burst' },
+            { keywords: ['honest', 'honesty', 'rickshaw', 'integrity', 'truth', 'moral', 'conscience'], icon: 'fa-scale-balanced' },
+            { keywords: ['load shedding', 'electricity', 'power', 'solar', 'energy', 'blackout'], icon: 'fa-bolt' },
+            { keywords: ['mobile', 'phone', 'internet', 'digital', 'computer', 'technology', 'cyber', 'online', 'social media'], icon: 'fa-mobile-screen-button' },
+            { keywords: ['multimedia', 'classroom', 'projector', 'smart board', 'school', 'college', 'education', 'teacher', 'student', 'library'], icon: 'fa-chalkboard-user' },
+            { keywords: ['literacy', 'rate', 'graph', 'chart', 'statistics', 'population', 'poverty', 'gdp', 'growth'], icon: 'fa-chart-line' },
+            { keywords: ['english', 'language', 'improve', 'grammar', 'vocabulary', 'reading', 'writing'], icon: 'fa-language' },
+            { keywords: ['friend', 'friendship', 'email', 'letter', 'invitation', 'congratulation', 'advice'], icon: 'fa-envelope-open-text' },
+            { keywords: ['health', 'dengue', 'covid', 'disease', 'hospital', 'doctor', 'food adulteration', 'nutrition'], icon: 'fa-heart-pulse' },
+            { keywords: ['book fair', 'culture', 'festival', 'heritage', 'independence', 'language movement', 'victory'], icon: 'fa-landmark' },
+            { keywords: ['drug', 'addiction', 'corruption', 'dowry', 'child labor', 'gender', 'climate'], icon: 'fa-shield-halved' },
+            { keywords: ['discipline', 'punctuality', 'hard work', 'perseverance', 'time', 'success', 'patriotism'], icon: 'fa-award' }
+        ];
+
+        function getCategoryIcon(category) {
+            const found = CATEGORIES.find(c => c.id === category);
+            return found ? found.icon : 'fa-file-lines';
+        }
+
+        function getTopicIcon(title, category, content = '') {
+            const haystack = `${title || ''} ${content.slice(0, 180)}`.toLowerCase();
+            for (const rule of TOPIC_ICON_RULES) {
+                if (rule.keywords.some(kw => haystack.includes(kw))) {
+                    return rule.icon;
+                }
+            }
+            return getCategoryIcon(category);
+        }
+
+        // -------------------------------------------------------------------
+        // 2. PRE-LOADED EXAM-STANDARD SAMPLE WRITINGS (BANGLADESH NCTB)
+        // -------------------------------------------------------------------
+        const INITIAL_SAMPLES = [
+            {
+                title: "Tree Plantation",
+                category: "Paragraph Writing",
+                level: "Both SSC & HSC",
+                starred: true,
+                content: "Tree plantation means planting more and more trees in a planned way. Trees are the most important gift of nature and our best friends. They play a vital role in maintaining ecological balance and keeping our environment cool and habitable. Trees absorb carbon dioxide from the atmosphere and release oxygen, without which no living being can survive for a single moment. Besides, trees provide us with wood, fruits, shade, flowers, and herbal medicines. They prevent soil erosion, protect us from natural calamities like floods, droughts, and cyclones, and bring rainfall to keep the land fertile. Unfortunately, greedy people are cutting down trees indiscriminately for timber, fuel, and urbanization. As a result, Bangladesh is facing severe climate change, rising temperatures, and desertification. To save ourselves and our future generations, we must plant more trees than we cut down. June and July are the best months for tree plantation in Bangladesh. We can plant trees on both sides of roads, highways, embankments, and in unused spaces around schools, offices, and homesteads. The government and mass media should raise public awareness so that everyone takes part in the tree plantation campaign enthusiastically."
+            },
+            {
+                title: "Traffic Jam in Bangladesh",
+                category: "Paragraph Writing",
+                level: "Both SSC & HSC",
+                starred: false,
+                content: "Traffic jam refers to a long line of vehicles stuck on a road that cannot move forward or moves very slowly. It has become a common and acute problem in almost all the major cities and towns of Bangladesh, especially in Dhaka. There are many causes behind this unbearable problem. Firstly, the number of vehicles is increasing rapidly in proportion to our narrow and insufficient roads. Secondly, many drivers do not follow traffic rules and tend to overtake others recklessly. Unlicensed vehicles, rickshaws, and illegal parking on busy streets worsen the situation. Moreover, the lack of strict enforcement of traffic laws and insufficient traffic police contribute greatly to gridlocks. Traffic jam causes untold sufferings to people from all walks of life. Students cannot reach their schools and colleges in time, office-goers get late, and ambulances carrying critical patients often get stranded, leading to tragic deaths. It also kills valuable working hours and hampers economic productivity. To solve this problem, well-planned spacious roads and flyovers should be constructed. Strict traffic laws must be enforced, illegal parking must be banned, and public transport should be modernized so that people feel discouraged from using private cars."
+            },
+            {
+                title: "Honesty of a Rickshaw Puller",
+                category: "Completing Story",
+                level: "Both SSC & HSC",
+                starred: true,
+                content: "Once there lived a poor rickshaw puller in Dhaka city. Though he lived from hand to mouth, he was very honest and contented with what he earned through hard labor. One afternoon, a well-dressed gentleman hired his rickshaw from Motijheel to Dhanmondi. When they reached the destination, the passenger paid the fare and hurriedly entered his house. A few minutes later, while cleaning the seat of his rickshaw, the puller noticed a black leather bag lying on the footrest.\n\nHe opened the bag out of curiosity and was startled to find a large bundle of taka along with some important documents and a visiting card. For a moment, he thought that this money could solve all his financial miseries forever. However, his conscience pricked him immediately. He realized that the money did not belong to him and the owner must be in deep distress. Without wasting a single minute, he looked at the address on the visiting card and pulled his rickshaw back to the gentleman's house.\n\nThe gentleman was frantically searching for his lost bag when the rickshaw puller knocked at the gate and handed it over intact. Overwhelmed with joy and gratitude, the gentleman offered him a handsome reward. The rickshaw puller politely refused the money, saying that returning lost property was his moral duty. Impressed by his rare honesty, the gentleman arranged a permanent job for him in his company.\n\nMoral: Honesty is always rewarded."
+            },
+            {
+                title: "Email to Friend Advising How to Improve English",
+                category: "Email Writing",
+                level: "Both SSC & HSC",
+                starred: true,
+                content: "To: tanvir.ahmed24@gmail.com\nSubject: Advice on how to improve proficiency in English\n\nDear Tanvir,\n\nI hope this email finds you in good health and high spirits. Yesterday I received your letter and learned that you are worried about your weak performance in English. Since English is an international language and a compulsory subject in our curriculum, you must overcome this weakness as early as possible.\n\nTo improve your English, you should first stop memorizing answers blindly. Instead, try to understand basic grammatical rules and sentence structures. Make it a habit to read an English daily newspaper, such as The Daily Star, every morning and note down at least five new words daily with their meanings and usage. Watching English news channels or educational videos will also sharpen your listening and pronunciation skills. Most importantly, practice writing a short paragraph or a page of a diary every day, and try speaking in English with your friends without fearing mistakes.\n\nI am confident that regular practice will bring a remarkable change within a few months. Let me know about your progress. Convey my best regards to your parents.\n\nYours ever,\nRafi"
+            },
+            {
+                title: "Dialogue Between Two Friends About Load Shedding",
+                category: "Dialogue Writing",
+                level: "Both SSC & HSC",
+                starred: false,
+                content: "Sajid: Hello Nabil! How are you doing?\nNabil: Not so well, Sajid. The frequent load shedding in our area has made life miserable.\nSajid: You are absolutely right. We are also facing the same problem, especially at night when we sit down to study.\nNabil: Exactly! Our HSC board exam is knocking at the door, and we cannot concentrate properly due to the unbearable heat and darkness.\nSajid: Not only students, but patients in hospitals, mills, and factories are also suffering tremendously. Industrial production is falling every day.\nNabil: Why do you think load shedding happens so frequently in our country?\nSajid: The main reason is that the demand for electricity is much higher than its production. Besides, system loss, illegal connections, and wastage of power make the crisis worse.\nNabil: How can we overcome this serious crisis?\nSajid: The government should set up more power plants and explore renewable energy sources like solar power. At the same time, citizens must stop wasting electricity.\nNabil: True. Turning off unnecessary lights and fans is our civic responsibility. Thank you for the nice discussion, Sajid.\nSajid: You're most welcome, Nabil. See you tomorrow at college."
+            },
+            {
+                title: "Report on a Devastating Road Accident",
+                category: "Report Writing",
+                level: "HSC",
+                starred: true,
+                content: "Three Killed, Ten Injured in Dhaka-Mymensingh Highway Crash\n\nStaff Correspondent, Mymensingh, 15 November:\n\nAt least three people were killed on the spot and ten others sustained severe injuries in a tragic head-on collision between a passenger bus and a speeding truck on the Dhaka-Mymensingh highway at Trishal early this morning.\n\nAccording to eyewitnesses and highway police, the Dhaka-bound bus belonging to 'Ena Paribahan' was trying to overtake a slow-moving van when it collided head-on with a stone-laden truck coming from the opposite direction around 7:30 am. The impact was so severe that the front portion of both vehicles was completely mangled.\n\nLocal people and Fire Service personnel rushed to the spot immediately and rescued the trapped passengers. Three passengers died instantly, while the injured were swiftly taken to Mymensingh Medical College Hospital. Hospital sources confirmed that the condition of two injured passengers remains critical.\n\nTraffic movement on the busy highway remained suspended for nearly two hours before police removed the wrecked vehicles with a wrecker. A case has been filed with Trishal Police Station, though the truck driver managed to flee the scene."
+            },
+            {
+                title: "Application for Setting Up a Multimedia Classroom",
+                category: "Formal Letter / Application",
+                level: "Both SSC & HSC",
+                starred: false,
+                content: "20 November 2026\nThe Principal,\nNotre Dame College, Dhaka.\n\nSubject: Prayer for setting up a multimedia classroom.\n\nSir,\nWith due respect and humble submission, we, the students of your renowned institution, beg to draw your kind attention to the fact that our college is famous for its outstanding academic results. However, in this age of information and communication technology, we are lagging behind in modern digital learning facilities.\n\nDifficult topics in Science, English, and Geography become much easier and more interesting when explained through visual presentations, animations, and audio-visual clips. A multimedia classroom equipped with a projector, smart board, and internet connection will enable our teachers to conduct interactive classes effectively and prepare us for global standards.\n\nWe, therefore, pray and hope that you would be kind enough to take necessary steps to set up a multimedia classroom in our college as soon as possible and oblige thereby.\n\nYours obediently,\nMahmudul Hasan\nClass: XI, Roll: 104\nOn behalf of the students of Notre Dame College"
+            },
+            {
+                title: "Uses and Abuses of Mobile Phone / Internet",
+                category: "Composition / Essay",
+                level: "Both SSC & HSC",
+                starred: true,
+                content: "Modern science has blessed human civilization with many wonders, and the mobile phone connected with the internet is undoubtedly one of the most revolutionary inventions among them. What started merely as a device for voice communication has now turned into a pocket-sized computer that connects the entire world within seconds.\n\nThe uses of mobile phones and the internet in our daily life are limitless. Firstly, it has made communication instantaneous and affordable. People can talk face-to-face with their loved ones living thousands of miles away through video calls. Secondly, it serves as an ocean of knowledge for students. Through online classes, digital libraries, and educational platforms, learners can access study materials anytime. Furthermore, online banking, e-commerce, telemedicine, and freelancing have created vast economic opportunities for unemployed youth.\n\nHowever, every coin has two sides, and excessive misuse of this technology brings serious harms. Many teenagers and students are becoming dangerously addicted to social media, online gaming, and irrelevant videos. As a result, they waste their golden hours of study, suffer from sleep deprivation, eye strain, and lose interest in outdoor physical sports. Cyberbullying, spread of rumors, and online fraud have also become alarming social threats.\n\nIn conclusion, mobile phones and the internet are neither good nor bad on their own; their impact depends entirely on how we use them. Parents and teachers should guide the young generation to use technology responsibly so that it remains a blessing rather than a curse."
+            },
+            {
+                title: "Literacy Rate of Bangladesh (2015–2024)",
+                category: "Graph & Chart Description",
+                level: "Both SSC & HSC",
+                starred: false,
+                content: "The given bar chart illustrates the gradual rise in the literacy rate of Bangladesh over a ten-year period from 2015 to 2024. The horizontal axis represents the specific years, while the vertical axis shows the percentage of literate people.\n\nAccording to the chart, the literacy rate stood at 63% in the year 2015, which was the lowest figure during the entire period. In 2017, the rate experienced a noticeable upward trend and reached 68%. This positive momentum continued steadily, climbing to 72% in 2019 and further rising to 74.5% in 2021 despite educational disruptions.\n\nBy the year 2024, the literacy rate reached its peak at 77.9%, marking an overall increase of nearly 15 percentage points over the decade. This consistent growth reflects the success of government initiatives such as free textbook distribution, female education stipends, and nationwide awareness programs.\n\nOverall, the chart clearly demonstrates a steady and encouraging progress in the education sector of Bangladesh from 2015 to 2024."
+            }
+        ];
+
+        // -------------------------------------------------------------------
+        // 3. APPLICATION STATE & LOCAL DEVICE STORAGE
+        // -------------------------------------------------------------------
+        let writings = []; // In-memory mirror, saved to this device after every change
+        let selectedCategory = 'ALL';
+        let selectedLevel = 'ALL';
+        let onlyStarred = false;
+        let searchQuery = '';
+        let activeReaderDoc = null;
+        let readerFontSize = 'md';
+        let studyBlurEnabled = false;
+        let deleteTargetId = null;
+
+        const STORAGE_KEY = 'hsc-ssc-writing-hub:writings:v1';
+        let storageOk = true;
+
+        function persistWritings() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(writings));
+                storageOk = true;
+                return true;
+            } catch (err) {
+                console.error("Local save failed:", err);
+                storageOk = false;
+                showToast("Could not save on this device. Use Backup > Export JSON.", "error");
+                return false;
+            }
+        }
+
+        function loadSavedWritings() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw !== null) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (err) {
+                console.error("Local load failed:", err);
+                storageOk = false;
+            }
+            return null;
+        }
+
+        function sortWritings() {
+            writings.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        }
+
+        function triggerFeedPageShift() {
+            const feedEl = document.getElementById('feedShiftContainer');
+            const sweepEl = document.getElementById('pageShiftSweep');
+            if (feedEl) {
+                feedEl.classList.remove('feed-page-shift');
+                void feedEl.offsetWidth;
+                feedEl.classList.add('feed-page-shift');
+            }
+            if (sweepEl) {
+                sweepEl.classList.remove('active');
+                void sweepEl.offsetWidth;
+                sweepEl.classList.add('active');
+            }
+        }
+
+        function refreshUI(shiftPage = false) {
+            document.getElementById('loadingState').classList.add('hidden');
+            renderCategoryTabs();
+            renderWritingsGrid();
+            if (shiftPage) triggerFeedPageShift();
+        }
+
+        function initApp() {
+            const saved = loadSavedWritings();
+            if (saved) {
+                writings = saved;
+            } else {
+                writings = INITIAL_SAMPLES.map((s, idx) => ({
+                    id: 'w-' + Date.now() + '-' + idx,
+                    ...s,
+                    createdAt: Date.now() - idx * 1000
+                }));
+                persistWritings();
+            }
+            sortWritings();
+            refreshUI(false);
+            if (!storageOk) {
+                showToast("Saving is blocked in this browser. Use Backup > Export JSON.", "error");
+            }
+        }
+
+        // -------------------------------------------------------------------
+        // 4. SMART TEXT FORMATTING & WORD COUNT UTILITIES
+        // -------------------------------------------------------------------
+        function countWords(text) {
+            if (!text || !text.trim()) return 0;
+            return text.trim().split(/\s+/).length;
+        }
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatWritingContent(text, category) {
+            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+            
+            return lines.map((rawLine, index) => {
+                const line = escapeHtml(rawLine.trim());
+                const blurClass = studyBlurEnabled ? 'study-blur' : '';
+
+                // 1. Dialogue Speaker Detection ("Name: speech")
+                if (category === 'Dialogue Writing' || /^[A-Z][a-zA-Z\s\.]{1,25}:/.test(rawLine.trim())) {
+                    const colonIdx = line.indexOf(':');
+                    if (colonIdx > 0 && colonIdx < 28) {
+                        const speaker = line.slice(0, colonIdx + 1);
+                        const speech = line.slice(colonIdx + 1);
+                        return `<p class="leading-relaxed ${blurClass}" onclick="this.classList.toggle('revealed')">
+                            <span class="font-sans font-bold text-emerald-700 dark:text-emerald-400 mr-1">${speaker}</span><span>${speech}</span>
+                        </p>`;
+                    }
+                }
+
+                // 2. Email Headers (To:, From:, Date:, Subject:)
+                if (/^(To|From|Date|Subject|Sent):/i.test(rawLine.trim())) {
+                    const colonIdx = line.indexOf(':');
+                    const headerKey = line.slice(0, colonIdx + 1);
+                    const headerVal = line.slice(colonIdx + 1);
+                    return `<div class="font-sans text-sm sm:text-base bg-slate-100/80 dark:bg-slate-800/80 px-3.5 py-2 rounded-lg border-l-4 border-emerald-500">
+                        <strong class="text-slate-900 dark:text-white">${headerKey}</strong> <span class="text-slate-700 dark:text-slate-300">${headerVal}</span>
+                    </div>`;
+                }
+
+                // 3. Completing Story Moral Line
+                if (/^Moral\s*:/i.test(rawLine.trim())) {
+                    return `<p class="font-sans font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-4 py-2.5 rounded-xl border border-emerald-200 dark:border-emerald-800/60 mt-4">
+                        ${line}
+                    </p>`;
+                }
+
+                // 4. Report Headline & Dateline
+                if (category === 'Report Writing' && index === 0 && line.length < 110) {
+                    return `<h3 class="font-sans text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-1">${line}</h3>`;
+                }
+                if (category === 'Report Writing' && index === 1 && /Correspondent|Reporter/i.test(line)) {
+                    return `<p class="font-sans text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide pb-2 border-b border-slate-200 dark:border-slate-800">${line}</p>`;
+                }
+
+                // 5. Standard Paragraph
+                return `<p class="leading-relaxed ${blurClass}" onclick="this.classList.toggle('revealed')">${line}</p>`;
+            }).join('');
+        }
+
+        // -------------------------------------------------------------------
+        // 5. RENDERING UI COMPONENTS
+        // -------------------------------------------------------------------
+        function renderCategoryTabs() {
+            const container = document.getElementById('categoryTabs');
+            container.innerHTML = CATEGORIES.map(cat => {
+                const count = cat.id === 'ALL' 
+                    ? writings.length 
+                    : writings.filter(w => w.category === cat.id).length;
+                
+                const isActive = selectedCategory === cat.id;
+                const activeClasses = isActive 
+                    ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20 border-emerald-600' 
+                    : 'bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800';
+
+                return `
+                    <button data-cat="${cat.id}" class="cat-tab-btn shrink-0 px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition ${activeClasses}">
+                        <i class="fa-solid ${cat.icon}"></i>
+                        <span>${cat.label}</span>
+                        <span class="px-1.5 py-0.5 rounded-md text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">
+                            ${count}
+                        </span>
+                    </button>
+                `;
+            }).join('');
+
+            // Update contextual exam tip banner + icon
+            const currentCatObj = CATEGORIES.find(c => c.id === selectedCategory) || CATEGORIES[0];
+            document.getElementById('tipBannerTitle').textContent = `${currentCatObj.label} — Exam Tip`;
+            document.getElementById('tipBannerText').textContent = currentCatObj.tip;
+            const tipIcon = document.getElementById('tipBannerIcon');
+            if (tipIcon) {
+                tipIcon.className = `fa-solid ${selectedCategory === 'ALL' ? 'fa-lightbulb' : currentCatObj.icon} text-sm`;
+            }
+        }
+
+        function getFilteredWritings() {
+            return writings.filter(item => {
+                if (selectedCategory !== 'ALL' && item.category !== selectedCategory) return false;
+                
+                if (selectedLevel !== 'ALL') {
+                    const lvl = (item.level || '').toUpperCase();
+                    if (selectedLevel === 'SSC' && !lvl.includes('SSC')) return false;
+                    if (selectedLevel === 'HSC' && !lvl.includes('HSC')) return false;
+                }
+
+                if (onlyStarred && !item.starred) return false;
+
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase();
+                    const matchTitle = (item.title || '').toLowerCase().includes(q);
+                    const matchContent = (item.content || '').toLowerCase().includes(q);
+                    const matchCat = (item.category || '').toLowerCase().includes(q);
+                    if (!matchTitle && !matchContent && !matchCat) return false;
+                }
+
+                return true;
+            });
+        }
+
+        function renderWritingsGrid() {
+            const filtered = getFilteredWritings();
+            const grid = document.getElementById('writingsGrid');
+            const empty = document.getElementById('emptyState');
+            const badge = document.getElementById('totalCountBadge');
+
+            badge.textContent = `${filtered.length} ${filtered.length === 1 ? 'topic' : 'topics'}`;
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.classList.remove('hidden');
+
+            const catStyles = {
+                'Paragraph Writing': {
+                    badge: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
+                    iconBox: 'bg-emerald-100/90 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300'
+                },
+                'Completing Story': {
+                    badge: 'bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300',
+                    iconBox: 'bg-purple-100/90 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300'
+                },
+                'Email Writing': {
+                    badge: 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300',
+                    iconBox: 'bg-blue-100/90 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+                },
+                'Dialogue Writing': {
+                    badge: 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300',
+                    iconBox: 'bg-amber-100/90 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300'
+                },
+                'Report Writing': {
+                    badge: 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300',
+                    iconBox: 'bg-rose-100/90 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300'
+                },
+                'Formal Letter / Application': {
+                    badge: 'bg-cyan-50 text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300',
+                    iconBox: 'bg-cyan-100/90 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300'
+                },
+                'Composition / Essay': {
+                    badge: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300',
+                    iconBox: 'bg-indigo-100/90 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300'
+                },
+                'Graph & Chart Description': {
+                    badge: 'bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300',
+                    iconBox: 'bg-teal-100/90 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300'
+                }
+            };
+
+            grid.innerHTML = filtered.map((item, idx) => {
+                const words = countWords(item.content);
+                const snippet = item.content.replace(/\s+/g, ' ').slice(0, 140) + (item.content.length > 140 ? '...' : '');
+                const styleObj = catStyles[item.category] || {
+                    badge: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300',
+                    iconBox: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                };
+                const topicIcon = getTopicIcon(item.title, item.category, item.content);
+                const catIcon = getCategoryIcon(item.category);
+                const staggerDelay = Math.min(idx * 45, 360);
+
+                return `
+                    <div data-id="${item.id}" style="animation-delay: ${staggerDelay}ms" class="writing-card card-animate-in group bg-white/95 dark:bg-slate-900/95 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-2 mb-3">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold ${styleObj.badge}">
+                                    <i class="fa-solid ${catIcon} text-[10px]"></i>
+                                    <span>${escapeHtml(item.category)}</span>
+                                </span>
+                                <button data-star-id="${item.id}" class="card-star-btn p-1.5 -mr-1.5 -mt-1 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/40 transition" title="Toggle Exam Suggestion">
+                                    <i class="${item.starred ? 'fa-solid text-amber-500' : 'fa-regular text-slate-400 group-hover:text-amber-400'} fa-star text-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-start gap-3 mb-2">
+                                <div class="w-9 h-9 rounded-xl ${styleObj.iconBox} flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid ${topicIcon} text-sm"></i>
+                                </div>
+                                <h3 class="font-serif font-bold text-lg text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition line-clamp-2 leading-snug">
+                                    ${escapeHtml(item.title)}
+                                </h3>
+                            </div>
+
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed mb-4 pl-12">
+                                ${escapeHtml(snippet)}
+                            </p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                <i class="fa-solid fa-graduation-cap text-[10px] text-emerald-600 dark:text-emerald-400"></i>
+                                ${escapeHtml(item.level || 'SSC & HSC')}
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="fa-solid fa-align-left text-slate-400"></i> ${words} words
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // -------------------------------------------------------------------
+        // 6. READER MODAL & PAGE SHIFTING LOGIC
+        // -------------------------------------------------------------------
+        function openModalAnimated(modalEl) {
+            modalEl.classList.remove('hidden');
+            void modalEl.offsetWidth;
+            modalEl.classList.add('is-open');
+        }
+
+        function closeModalAnimated(modalEl, onDone) {
+            modalEl.classList.remove('is-open');
+            setTimeout(() => {
+                modalEl.classList.add('hidden');
+                if (typeof onDone === 'function') onDone();
+            }, 220);
+        }
+
+        function updateReadingProgress() {
+            const scroller = document.getElementById('readerScrollContainer');
+            const bar = document.getElementById('readingProgressBar');
+            if (!scroller || !bar) return;
+            const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+            const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (scroller.scrollTop / maxScroll) * 100)) : 0;
+            bar.style.width = `${pct}%`;
+        }
+
+        function getReaderNavigationList() {
+            const filtered = getFilteredWritings();
+            if (activeReaderDoc && !filtered.some(w => w.id === activeReaderDoc.id)) {
+                return writings.includes(activeReaderDoc) ? writings : [activeReaderDoc];
+            }
+            return filtered.length > 0 ? filtered : writings;
+        }
+
+        function openReaderModal(docObj, shiftDirection = null) {
+            activeReaderDoc = docObj;
+            const modal = document.getElementById('readerModal');
+            const stage = document.getElementById('readerPageShiftStage');
+            const scroller = document.getElementById('readerScrollContainer');
+
+            document.getElementById('readerCategoryLabel').textContent = docObj.category;
+            document.getElementById('readerCategoryIcon').className = `fa-solid ${getCategoryIcon(docObj.category)}`;
+            document.getElementById('readerLevelBadge').textContent = docObj.level || 'Both SSC & HSC';
+            document.getElementById('readerTitle').textContent = docObj.title;
+
+            const topicIcon = getTopicIcon(docObj.title, docObj.category, docObj.content);
+            document.getElementById('readerTopicIcon').className = `fa-solid ${topicIcon} text-lg`;
+
+            const words = countWords(docObj.content);
+            document.getElementById('readerWordCount').textContent = words;
+            document.getElementById('readerReadTime').textContent = Math.max(1, Math.ceil(words / 180));
+            document.getElementById('readerWriteTime').textContent = Math.max(2, Math.ceil(words / 22));
+
+            // Page index & Previous / Next buttons
+            const navList = getReaderNavigationList();
+            const currentIndex = navList.findIndex(w => w.id === docObj.id);
+            const totalPages = navList.length || 1;
+            const displayIndex = currentIndex >= 0 ? currentIndex + 1 : 1;
+            document.getElementById('readerPageIndicator').textContent = `${displayIndex} of ${totalPages}`;
+
+            const prevBtn = document.getElementById('prevWritingPageBtn');
+            const nextBtn = document.getElementById('nextWritingPageBtn');
+            prevBtn.disabled = currentIndex <= 0;
+            nextBtn.disabled = currentIndex < 0 || currentIndex >= navList.length - 1;
+
+            // Star button state
+            const starIcon = document.querySelector('#readerStarBtn i');
+            starIcon.className = docObj.starred ? 'fa-solid fa-star text-amber-500' : 'fa-regular fa-star text-amber-500';
+
+            // Structure Tip
+            const catInfo = CATEGORIES.find(c => c.id === docObj.category) || CATEGORIES[0];
+            document.getElementById('readerStructureTip').textContent = catInfo.tip;
+
+            // Formatted content
+            document.getElementById('readerContent').innerHTML = formatWritingContent(docObj.content, docObj.category);
+            applyReaderFontSize();
+
+            // Reset scroll & progress bar
+            if (scroller) {
+                scroller.scrollTop = 0;
+            }
+            updateReadingProgress();
+
+            // Apply directional page-shifting animation if shifting between pages
+            if (stage && shiftDirection) {
+                stage.classList.remove('page-shift-next', 'page-shift-prev');
+                void stage.offsetWidth;
+                stage.classList.add(shiftDirection === 'prev' ? 'page-shift-prev' : 'page-shift-next');
+                const sweepEl = document.getElementById('pageShiftSweep');
+                if (sweepEl) {
+                    sweepEl.classList.remove('active');
+                    void sweepEl.offsetWidth;
+                    sweepEl.classList.add('active');
+                }
+            }
+
+            if (modal.classList.contains('hidden')) {
+                openModalAnimated(modal);
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function shiftReaderPage(direction) {
+            if (!activeReaderDoc) return;
+            const navList = getReaderNavigationList();
+            const idx = navList.findIndex(w => w.id === activeReaderDoc.id);
+            if (idx === -1) return;
+            const targetIdx = direction === 'next' ? idx + 1 : idx - 1;
+            if (targetIdx >= 0 && targetIdx < navList.length) {
+                openReaderModal(navList[targetIdx], direction);
+            }
+        }
+
+        function closeReaderModal() {
+            const modal = document.getElementById('readerModal');
+            closeModalAnimated(modal, () => {
+                activeReaderDoc = null;
+                if (document.getElementById('addEditModal').classList.contains('hidden')) {
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        function applyReaderFontSize() {
+            const contentEl = document.getElementById('readerContent');
+            contentEl.classList.remove('text-sm', 'sm:text-base', 'text-base', 'sm:text-lg', 'text-lg', 'sm:text-xl');
+            
+            if (readerFontSize === 'sm') {
+                contentEl.classList.add('text-sm', 'sm:text-base');
+            } else if (readerFontSize === 'lg') {
+                contentEl.classList.add('text-lg', 'sm:text-xl');
+            } else {
+                contentEl.classList.add('text-base', 'sm:text-lg');
+            }
+
+            document.querySelectorAll('.font-size-btn').forEach(btn => {
+                if (btn.dataset.fontsize === readerFontSize) {
+                    btn.classList.add('bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-300');
+                } else {
+                    btn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                    btn.classList.add('text-slate-600', 'dark:text-slate-300');
+                }
+            });
+        }
+
+        // -------------------------------------------------------------------
+        // 7. CRUD OPERATIONS (SAVED TO THIS DEVICE)
+        // -------------------------------------------------------------------
+        function newId() {
+            return 'w-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+        }
+
+        async function saveWriting(data, editId = null, silent = false) {
+            if (editId) {
+                const idx = writings.findIndex(w => w.id === editId);
+                if (idx !== -1) writings[idx] = { ...writings[idx], ...data, updatedAt: Date.now() };
+                if (!silent) showToast("Writing updated!");
+            } else {
+                writings.unshift({ id: newId(), ...data, createdAt: Date.now() });
+                if (!silent) showToast("New writing saved on this device!");
+            }
+            sortWritings();
+            persistWritings();
+            if (silent) return;
+            refreshUI(true);
+            if (editId && activeReaderDoc && activeReaderDoc.id === editId) {
+                const updated = writings.find(w => w.id === editId);
+                if (updated) openReaderModal(updated);
+            }
+        }
+
+        async function toggleStar(docId) {
+            const item = writings.find(w => w.id === docId);
+            if (!item) return;
+            item.starred = !item.starred;
+            persistWritings();
+            renderWritingsGrid();
+            if (activeReaderDoc && activeReaderDoc.id === docId) openReaderModal(item);
+            showToast(item.starred ? "Added to Exam Suggestions ★" : "Removed from Exam Suggestions");
+        }
+
+        async function deleteWriting(docId) {
+            writings = writings.filter(w => w.id !== docId);
+            persistWritings();
+            renderCategoryTabs();
+            renderWritingsGrid();
+            if (activeReaderDoc && activeReaderDoc.id === docId) {
+                closeReaderModal();
+            }
+            showToast("Writing deleted.");
+        }
+
+        // -------------------------------------------------------------------
+        // 8. MODAL & INTERACTION EVENT LISTENERS
+        // -------------------------------------------------------------------
+        function updateFormTopicIconPreview() {
+            const titleVal = document.getElementById('inputTitle').value;
+            const catVal = document.getElementById('inputCategory').value;
+            const contentVal = document.getElementById('inputContent').value;
+            const iconName = getTopicIcon(titleVal, catVal, contentVal);
+            const previewEl = document.querySelector('#formTopicIconPreview i');
+            if (previewEl) {
+                previewEl.className = `fa-solid ${iconName}`;
+            }
+        }
+
+        function openAddModal(docToEdit = null) {
+            const modal = document.getElementById('addEditModal');
+            const form = document.getElementById('writingForm');
+            form.reset();
+
+            if (docToEdit) {
+                document.getElementById('modalFormTitle').textContent = "Edit Writing";
+                document.getElementById('editDocId').value = docToEdit.id;
+                document.getElementById('inputCategory').value = docToEdit.category;
+                document.getElementById('inputLevel').value = docToEdit.level || 'Both SSC & HSC';
+                document.getElementById('inputTitle').value = docToEdit.title;
+                document.getElementById('inputContent').value = docToEdit.content;
+                document.getElementById('inputStarred').checked = !!docToEdit.starred;
+                document.getElementById('liveWordCounter').textContent = `${countWords(docToEdit.content)} words`;
+            } else {
+                document.getElementById('modalFormTitle').textContent = "Add New Writing";
+                document.getElementById('editDocId').value = "";
+                if (selectedCategory !== 'ALL') {
+                    document.getElementById('inputCategory').value = selectedCategory;
+                }
+                document.getElementById('liveWordCounter').textContent = "0 words";
+            }
+
+            updateFormTopicIconPreview();
+            openModalAnimated(modal);
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => document.getElementById('inputTitle').focus(), 100);
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('addEditModal');
+            closeModalAnimated(modal, () => {
+                if (!activeReaderDoc) document.body.style.overflow = '';
+            });
+        }
+
+        // Toast Helper
+        let toastTimeout;
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            document.getElementById('toastMessage').textContent = msg;
+
+            icon.className = type === 'error' 
+                ? 'fa-solid fa-circle-exclamation text-rose-400' 
+                : 'fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600';
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2800);
+        }
+
+        // Clipboard Helper (iframe-safe using document.execCommand)
+        function copyTextToClipboard(text) {
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = text;
+            tempTextarea.style.position = 'fixed';
+            tempTextarea.style.left = '-9999px';
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Copied full text to clipboard!");
+            } catch (err) {
+                showToast("Could not copy text.", "error");
+            }
+            document.body.removeChild(tempTextarea);
+        }
+
+        // Wire up all DOM events
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle
+            const themeBtn = document.getElementById('themeToggleBtn');
+            const themeIcon = document.getElementById('themeIcon');
+            themeBtn.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                themeIcon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-sm' : 'fa-solid fa-moon text-sm';
+            });
+
+            // Backup Dropdown Toggle
+            const backupBtn = document.getElementById('backupMenuBtn');
+            const backupDropdown = document.getElementById('backupDropdown');
+            backupBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                backupDropdown.classList.toggle('hidden');
+            });
+            document.addEventListener('click', () => backupDropdown.classList.add('hidden'));
+
+            // Export JSON
+            document.getElementById('exportJsonBtn').addEventListener('click', () => {
+                const blob = new Blob([JSON.stringify(writings, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const dlAnchor = document.createElement('a');
+                dlAnchor.href = url;
+                dlAnchor.download = `NCTB-English-Writings-${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(dlAnchor);
+                dlAnchor.click();
+                dlAnchor.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                showToast("Backup JSON exported!");
+            });
+
+            // Import JSON
+            document.getElementById('importJsonInput').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        if (!Array.isArray(imported)) throw new Error("Invalid format");
+                        let addedCount = 0;
+                        const seen = new Set(writings.map(w => (w.category + '||' + w.title).toLowerCase()));
+                        for (const item of imported) {
+                            if (item.title && item.content && item.category) {
+                                const key = (item.category + '||' + item.title).toLowerCase();
+                                if (seen.has(key)) continue;
+                                seen.add(key);
+                                await saveWriting({
+                                    title: item.title,
+                                    category: item.category,
+                                    level: item.level || 'Both SSC & HSC',
+                                    content: item.content,
+                                    starred: !!item.starred
+                                }, null, true);
+                                addedCount++;
+                            }
+                        }
+                        refreshUI(true);
+                        showToast(`Imported ${addedCount} writings successfully!`);
+                    } catch (err) {
+                        showToast("Invalid JSON backup file.", "error");
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = '';
+            });
+
+            // Category Tab Click (Event Delegation with Page Shift)
+            document.getElementById('categoryTabs').addEventListener('click', (e) => {
+                const btn = e.target.closest('.cat-tab-btn');
+                if (!btn) return;
+                selectedCategory = btn.dataset.cat;
+                refreshUI(true);
+            });
+
+            // Level Filter Clicks (with Page Shift)
+            document.querySelectorAll('.level-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedLevel = btn.dataset.level;
+                    document.querySelectorAll('.level-filter-btn').forEach(b => {
+                        b.classList.remove('bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                        b.classList.add('text-slate-600', 'dark:text-slate-300');
+                    });
+                    btn.classList.add('bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-300');
+                    renderWritingsGrid();
+                    triggerFeedPageShift();
+                });
+            });
+
+            // Starred Filter Toggle (with Page Shift)
+            const starredBtn = document.getElementById('starredFilterBtn');
+            starredBtn.addEventListener('click', () => {
+                onlyStarred = !onlyStarred;
+                const icon = starredBtn.querySelector('i');
+                if (onlyStarred) {
+                    starredBtn.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-800', 'dark:bg-amber-950/50', 'dark:border-amber-700', 'dark:text-amber-300');
+                    icon.className = 'fa-solid fa-star text-amber-500';
+                } else {
+                    starredBtn.classList.remove('bg-amber-50', 'border-amber-300', 'text-amber-800', 'dark:bg-amber-950/50', 'dark:border-amber-700', 'dark:text-amber-300');
+                    icon.className = 'fa-regular fa-star text-amber-500';
+                }
+                renderWritingsGrid();
+                triggerFeedPageShift();
+            });
+
+            // Search Input
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                clearSearchBtn.classList.toggle('hidden', searchQuery.length === 0);
+                renderWritingsGrid();
+            });
+            clearSearchBtn.addEventListener('click', () => {
+                searchQuery = '';
+                searchInput.value = '';
+                clearSearchBtn.classList.add('hidden');
+                renderWritingsGrid();
+                triggerFeedPageShift();
+            });
+
+            // Reset Filters
+            document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+                selectedCategory = 'ALL';
+                selectedLevel = 'ALL';
+                onlyStarred = false;
+                searchQuery = '';
+                searchInput.value = '';
+                clearSearchBtn.classList.add('hidden');
+                starredBtn.classList.remove('bg-amber-50', 'border-amber-300', 'text-amber-800', 'dark:bg-amber-950/50', 'dark:border-amber-700', 'dark:text-amber-300');
+                starredBtn.querySelector('i').className = 'fa-regular fa-star text-amber-500';
+                document.querySelectorAll('.level-filter-btn').forEach(b => {
+                    const isAll = b.dataset.level === 'ALL';
+                    b.classList.toggle('bg-white', isAll);
+                    b.classList.toggle('dark:bg-slate-700', isAll);
+                    b.classList.toggle('text-slate-900', isAll);
+                    b.classList.toggle('dark:text-white', isAll);
+                    b.classList.toggle('shadow-sm', isAll);
+                });
+                refreshUI(true);
+            });
+
+            // Grid Card Clicks (Open Reader or Toggle Star)
+            document.getElementById('writingsGrid').addEventListener('click', (e) => {
+                const starBtn = e.target.closest('.card-star-btn');
+                if (starBtn) {
+                    e.stopPropagation();
+                    toggleStar(starBtn.dataset.starId);
+                    return;
+                }
+                const card = e.target.closest('.writing-card');
+                if (card) {
+                    const docObj = writings.find(w => w.id === card.dataset.id);
+                    if (docObj) openReaderModal(docObj);
+                }
+            });
+
+            // Reader Scroll Progress Bar Listener
+            document.getElementById('readerScrollContainer').addEventListener('scroll', updateReadingProgress);
+
+            // Reader Previous / Next Page Shifting Buttons
+            document.getElementById('prevWritingPageBtn').addEventListener('click', () => shiftReaderPage('prev'));
+            document.getElementById('nextWritingPageBtn').addEventListener('click', () => shiftReaderPage('next'));
+
+            // Reader Modal Controls
+            document.getElementById('closeReaderBtn').addEventListener('click', closeReaderModal);
+            document.getElementById('readerModal').addEventListener('click', (e) => {
+                if (e.target.id === 'readerModal') closeReaderModal();
+            });
+
+            document.querySelectorAll('.font-size-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    readerFontSize = btn.dataset.fontsize;
+                    applyReaderFontSize();
+                });
+            });
+
+            document.getElementById('toggleStudyBlurBtn').addEventListener('click', () => {
+                studyBlurEnabled = !studyBlurEnabled;
+                const btn = document.getElementById('toggleStudyBlurBtn');
+                btn.classList.toggle('bg-indigo-50', studyBlurEnabled);
+                btn.classList.toggle('border-indigo-300', studyBlurEnabled);
+                btn.classList.toggle('dark:bg-indigo-950/50', studyBlurEnabled);
+                if (activeReaderDoc) {
+                    document.getElementById('readerContent').innerHTML = formatWritingContent(activeReaderDoc.content, activeReaderDoc.category);
+                }
+                showToast(studyBlurEnabled ? "Memory Mode ON — Hover or tap lines to reveal" : "Memory Mode OFF");
+            });
+
+            document.getElementById('readerStarBtn').addEventListener('click', () => {
+                if (activeReaderDoc) toggleStar(activeReaderDoc.id);
+            });
+
+            document.getElementById('readerCopyBtn').addEventListener('click', () => {
+                if (activeReaderDoc) {
+                    const fullText = `${activeReaderDoc.title}\n\n${activeReaderDoc.content}`;
+                    copyTextToClipboard(fullText);
+                }
+            });
+
+            document.getElementById('readerEditBtn').addEventListener('click', () => {
+                if (activeReaderDoc) openAddModal(activeReaderDoc);
+            });
+
+            document.getElementById('readerDeleteBtn').addEventListener('click', () => {
+                if (activeReaderDoc) {
+                    deleteTargetId = activeReaderDoc.id;
+                    document.getElementById('deleteTargetTitle').textContent = activeReaderDoc.title;
+                    openModalAnimated(document.getElementById('deleteConfirmModal'));
+                }
+            });
+
+            // Delete Confirmation Modal
+            document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+                closeModalAnimated(document.getElementById('deleteConfirmModal'));
+                deleteTargetId = null;
+            });
+            document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+                if (deleteTargetId) {
+                    await deleteWriting(deleteTargetId);
+                    deleteTargetId = null;
+                }
+                closeModalAnimated(document.getElementById('deleteConfirmModal'));
+            });
+
+            // Add / Edit Modal Controls
+            document.getElementById('openAddModalBtn').addEventListener('click', () => openAddModal(null));
+            document.getElementById('closeAddModalBtn').addEventListener('click', closeAddModal);
+            document.getElementById('cancelAddModalBtn').addEventListener('click', closeAddModal);
+
+            // Live word counter & topic icon preview in form
+            document.getElementById('inputContent').addEventListener('input', (e) => {
+                const count = countWords(e.target.value);
+                document.getElementById('liveWordCounter').textContent = `${count} words`;
+                updateFormTopicIconPreview();
+            });
+            document.getElementById('inputTitle').addEventListener('input', updateFormTopicIconPreview);
+            document.getElementById('inputCategory').addEventListener('change', updateFormTopicIconPreview);
+
+            // Form Submit
+            document.getElementById('writingForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const editId = document.getElementById('editDocId').value.trim() || null;
+                const payload = {
+                    category: document.getElementById('inputCategory').value,
+                    level: document.getElementById('inputLevel').value,
+                    title: document.getElementById('inputTitle').value.trim(),
+                    content: document.getElementById('inputContent').value.trim(),
+                    starred: document.getElementById('inputStarred').checked
+                };
+
+                if (!payload.title || !payload.content) return;
+
+                await saveWriting(payload, editId);
+                closeAddModal();
+            });
+
+            // Keyboard Shortcuts: Escape closes modals, Left/Right shifts reader page
+            document.addEventListener('keydown', (e) => {
+                const delModal = document.getElementById('deleteConfirmModal');
+                const addModal = document.getElementById('addEditModal');
+                const readerModal = document.getElementById('readerModal');
+
+                if (e.key === 'Escape') {
+                    if (!delModal.classList.contains('hidden')) {
+                        closeModalAnimated(delModal);
+                    } else if (!addModal.classList.contains('hidden')) {
+                        closeAddModal();
+                    } else if (!readerModal.classList.contains('hidden')) {
+                        closeReaderModal();
+                    }
+                    return;
+                }
+
+                if (!readerModal.classList.contains('hidden') && addModal.classList.contains('hidden') && delModal.classList.contains('hidden')) {
+                    if (e.key === 'ArrowRight') {
+                        shiftReaderPage('next');
+                    } else if (e.key === 'ArrowLeft') {
+                        shiftReaderPage('prev');
+                    }
+                }
+            });
+
+            // Load saved data from this device & start app
+            initApp();
+        });
+    </script>
+</body>
+</html>
