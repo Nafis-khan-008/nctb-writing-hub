@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Prepare web assets in www/
         run: |
@@ -26,8 +26,13 @@ jobs:
           elif [ -f "HSC___SSC_English_Writing_Hub.html" ]; then
             cp HSC___SSC_English_Writing_Hub.html www/index.html
           else
-            echo "Missing index.html or HSC___SSC_English_Writing_Hub.html"
-            exit 1
+            FIRST_HTML=$(find . -maxdepth 3 -not -path '*/.*' -name "*.html" | head -n 1)
+            if [ -n "$FIRST_HTML" ]; then
+              cp "$FIRST_HTML" www/index.html
+            else
+              echo "No HTML file found in repository."
+              exit 1
+            fi
           fi
 
       - name: Initialize Capacitor and Android project
@@ -39,7 +44,7 @@ jobs:
           npx cap sync android
 
       - name: Setup Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -48,10 +53,12 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: nctb-writing-hub-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  
